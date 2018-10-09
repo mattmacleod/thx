@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es5",
+    "module": "es6",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "allowJs": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["node_modules/@types", "src/types"]
+  }
+}
