@@ -17,9 +17,33 @@ let config = {
   },
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: 'ts-loader', exclude: /(node_modules)/ },
       { test: /\.(png|jpg|svg|woff)$/, loader: 'url-loader', options: {limit: 8192} },
-      { test: /\.sass$/, enforce: 'pre', use: ['style-loader', 'css-loader', 'sass-loader'] }
+      { test: /\.sass$/, enforce: 'pre', use: ['style-loader', 'css-loader', 'sass-loader'] },
+      {
+        test: /\.(j|t)sx?$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  targets: {
+                    browsers: 'ie >= 11'
+                  }
+                }
+              ],
+              '@babel/preset-typescript',
+              '@babel/preset-react'
+            ],
+            plugins: [
+              '@babel/plugin-proposal-class-properties',
+              'react-hot-loader/babel'
+            ]
+          }
+        }
+      },
     ]
   },
   plugins: [

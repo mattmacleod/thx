@@ -21,4 +21,4 @@ deps:
 	yarn install
 
 test:
-	NODE_ENV=production 
+	NODE_ENV=production
