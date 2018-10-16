@@ -1,7 +1,8 @@
 import _ from 'lodash';
 
-const MIN_DETUNE = -20.0; // cents
-const MAX_DETUNE = 20.0; // cents
+const MIN_DETUNE = -10.0; // cents
+const MAX_DETUNE = 10.0; // cents
+const MIN_GAIN = 0.5;
 
 // Number of times per second that we will update the frequency of the
 // oscillator when drifting
@@ -18,9 +19,10 @@ export default class Fundamental {
 
   private context: AudioContext;
 
-  public readonly baseFrequency: number;
+  private baseFrequency: number;
   private landingFrequency: number;
   private detune: number;
+  private gain: number;
 
   private panDriftInversion: number;
   private frequencyDriftInversion: number;
@@ -38,11 +40,15 @@ export default class Fundamental {
     fundamentalCount: number,
     baseFrequency: number,
     landingFrequency: number,
+    gain: number,
   ) {
     this.runtime = runtime;
     this.context = ctx;
     this.baseFrequency = baseFrequency;
     this.landingFrequency = landingFrequency;
+    this.gain = gain;
+
+    console.warn(this.baseFrequency, this.landingFrequency, this.gain)
 
     // Randomly select a small amount of detuning to apply to the base
     // frequency. This avoids unpleasant interference patterns that otherwise
@@ -54,12 +60,8 @@ export default class Fundamental {
     // the value will subsequently be moved around the field.
     this.panner = this.context.createStereoPanner();
 
-    // We set the volume of each fundamental based on the total number of
-    // fundamentals that comprise the note. Create a gain node and set the value
-    // to the reciprocal of the fundamental count such that the total will add
-    // up to 1.
-    const gain = this.context.createGain();
-    gain.gain.value = 1/fundamentalCount;
+    const gainNode = this.context.createGain();
+    gainNode.gain.value = this.gain;
 
     // Create the main sawtooth oscillator that generates the waveform for this
     // fundamental, and apply the selected frequency and detuning parameters.
@@ -85,8 +87,8 @@ export default class Fundamental {
 
     // Finally, connect everything up so that we're ready to go
     this.oscillator.connect(this.filter);
-    this.filter.connect(gain);
-    gain.connect(this.panner);
+    this.filter.connect(gainNode);
+    gainNode.connect(this.panner);
   }
 
   public start() {

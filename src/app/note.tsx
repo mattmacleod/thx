@@ -16,7 +16,7 @@ const PEAK_GAIN = 7.0;
 
 // The minimum and maximum initial frequency for fundamentals
 const MIN_FREQUENCY = 200.0; // hertz
-const MAX_FREQUENCY = 300.0; // hertz
+const MAX_FREQUENCY = 250.0; // hertz
 
 // Given a base landing frequency, generate a list of final landing frequencies
 // that will be distributed amongst the fundamentals.
@@ -56,7 +56,6 @@ export default class Note {
   // and gain of the note.
   private outputGain: GainNode;
   private outputPanner: StereoPannerNode;
-  private outputFilter: BiquadFilterNode;
 
   // An array of the fundamentals which make up the whole note. Each of these
   // notes is nominally independent of the others, but the relative base
@@ -80,17 +79,10 @@ export default class Note {
     // fundamentals drift around the stereo field
     this.outputPanner = this.context.createStereoPanner();
 
-    // Create a global filter to boost the bass frequencies
-    this.outputFilter = this.context.createBiquadFilter();
-    this.outputFilter.type = "highshelf";
-    this.outputFilter.frequency.value = 5000;
-    this.outputFilter.gain.value = 0.3;
-
     // Connect the fundamentals through the output gain and panner into the
     // destination audio sink
     this.fundamentals.forEach((f) => f.output.connect(this.outputGain));
-    this.outputGain.connect(this.outputFilter);
-    this.outputFilter.connect(this.outputPanner);
+    this.outputGain.connect(this.outputPanner);
     this.outputPanner.connect(this.context.destination);
   }
 
@@ -112,13 +104,21 @@ export default class Note {
       return LANDING_FREQUENCIES[index];
     });
 
+    // Gain is calculated such that higher frequencies are attenuated and lower
+    // ones boosted.
+    const baseGain = 1 / FUNDAMENTAL_COUNT;
+    const gains = _.times(FUNDAMENTAL_COUNT, (n) => {
+      return 1- (1 + ((FUNDAMENTAL_COUNT / 2) - n)) * baseGain;
+    });
+
     return baseFrequencies.map((f, index) => {
       return new Fundamental(
         this.context,
         this.runtime,
         FUNDAMENTAL_COUNT,
         f,
-        landingFrequencies[index]
+        landingFrequencies[index],
+        gains[index],
       )
     });
   }
