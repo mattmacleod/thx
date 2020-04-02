@@ -6,21 +6,21 @@ import Fundamental from './fundamental';
 const FUNDAMENTAL_COUNT = 30;
 
 // The timeslice accuracy used for defining the volume envelope in milliseconds.
-const VOLUME_ENVELOPE_ACCURACY = 100;
+const VOLUME_ENVELOPE_ACCURACY = 10;
 
 // Used for terminating the note early.
 const STOP_RAMP_DURATION = 300; // milliseconds
 
 // The peak volume to use for the main envelope
-const PEAK_GAIN = 7.0;
+const PEAK_GAIN = 1.0;
 
 // The minimum and maximum initial frequency for fundamentals
 const MIN_FREQUENCY = 200.0; // hertz
-const MAX_FREQUENCY = 300.0; // hertz
+const MAX_FREQUENCY = 240.0; // hertz
 
 // Given a base landing frequency, generate a list of final landing frequencies
 // that will be distributed amongst the fundamentals.
-const BASE_LANDING_FREQUENCY = 19.05;
+const BASE_LANDING_FREQUENCY = 19;
 const LANDING_FREQUENCY_COUNT = 7;
 const LANDING_FREQUENCIES = _.times(
   LANDING_FREQUENCY_COUNT,
@@ -37,8 +37,8 @@ const LANDING_FREQUENCIES = _.times(
 const gainAt = (x: number) => {
   const e = Math.E;
 
-  const rampUp = 0.2 / (1 + e ** (-15 * (x - 0.15)));
-  const crescendo = 0.8 / (1 + e ** (-50 * (x - 0.5)));
+  const rampUp = 0.2 / (1 + e ** (-25 * (x - 0.2)));
+  const crescendo = 0.8 / (1 + e ** (-70 * (x - 0.5)));
   const rampDown = -1.02 / (1 + e ** (-45 * (x - 0.9)));
 
   return Math.max(0, (rampUp + crescendo + rampDown - 0.005) * PEAK_GAIN);
@@ -82,9 +82,9 @@ export default class Note {
 
     // Create a global filter to boost the bass frequencies
     this.outputFilter = this.context.createBiquadFilter();
-    this.outputFilter.type = "highshelf";
-    this.outputFilter.frequency.value = 5000;
-    this.outputFilter.gain.value = 0.3;
+    this.outputFilter.type = "lowshelf";
+    this.outputFilter.frequency.value = 1000;
+    this.outputFilter.gain.value = 10;
 
     // Connect the fundamentals through the output gain and panner into the
     // destination audio sink

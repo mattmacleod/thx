@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
-const MIN_DETUNE = -20.0; // cents
-const MAX_DETUNE = 20.0; // cents
+const MIN_DETUNE = -10.0; // cents
+const MAX_DETUNE = 10.0; // cents
 
 // Number of times per second that we will update the frequency of the
 // oscillator when drifting
