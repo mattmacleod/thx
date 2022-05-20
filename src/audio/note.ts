@@ -42,7 +42,7 @@ const gainAt = (x: number) => {
   const rampDown = -1.02 / (1 + e ** (-45 * (x - 0.9)));
 
   return Math.max(0, (rampUp + crescendo + rampDown - 0.005) * PEAK_GAIN);
-}
+};
 
 export default class Note {
   // The total runtime of the note, which is used to calculate concrete times
@@ -64,7 +64,7 @@ export default class Note {
   private fundamentals: Fundamental[];
 
   // A flag which indicates that the note is currently stopping.
-  private stopping: boolean = false;
+  private stopping = false;
 
   constructor(runtime: number) {
     this.context = new AudioContext();
@@ -82,7 +82,7 @@ export default class Note {
 
     // Create a global filter to boost the bass frequencies
     this.outputFilter = this.context.createBiquadFilter();
-    this.outputFilter.type = "lowshelf";
+    this.outputFilter.type = 'lowshelf';
     this.outputFilter.frequency.value = 1000;
     this.outputFilter.gain.value = 10;
 
@@ -119,7 +119,7 @@ export default class Note {
         FUNDAMENTAL_COUNT,
         f,
         landingFrequencies[index]
-      )
+      );
     });
   }
 
@@ -142,7 +142,7 @@ export default class Note {
     }
 
     this.outputGain.gain.setValueCurveAtTime(values, 0, this.runtime / 1000);
-  }
+  };
 
   private applyPanDrift = () => {
     const oscillator = this.context.createOscillator();
@@ -154,7 +154,7 @@ export default class Note {
     oscillator.connect(gain);
     gain.connect(this.outputPanner.pan);
     oscillator.start();
-  }
+  };
 
   // Stop playing the note by quickly fading out so that we avoid an unpleasant
   // click.
@@ -172,7 +172,7 @@ export default class Note {
     // immediately stopped
     this.outputGain.gain.linearRampToValueAtTime(
       0, this.context.currentTime + STOP_RAMP_DURATION / 1000
-    )
+    );
 
     // Wait for the ramp-down to complete
     await (new Promise((r) => window.setTimeout(r, STOP_RAMP_DURATION)));
@@ -180,10 +180,10 @@ export default class Note {
     // Stop each fundamental from doing whatever it's currently doing then close
     // the audio context entirely.
     this.fundamentals.forEach((f) => f.stop());
-    this.context.close();
+    void this.context.close();
   }
 
-  private positionToContextTime = (progress: number) => {
-    return (this.runtime * progress) / 1000;
-  }
+  // private positionToContextTime = (progress: number) => {
+  //   return (this.runtime * progress) / 1000;
+  // }
 }

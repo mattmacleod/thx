@@ -1,15 +1,14 @@
-import 'styles';
+import 'styles/global';
 
-import '@babel/polyfill';
+import { createElement } from 'react';
+import { createRoot } from 'react-dom/client';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import App from './components/app';
 
-import App from './app';
+const el = document.getElementById('AppRoot');
+if (el) {
+  createRoot(el).render(createElement(App));
+}
 
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('App');
-  if (!container) return;
-
-  ReactDOM.render(React.createElement(App), container);
-});
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+if (module.hot) module.hot.accept();

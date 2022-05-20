@@ -1,18 +1,31 @@
 {
   "compilerOptions": {
-    "sourceMap": true,
-    "target": "es5",
-    "module": "es6",
-    "lib": ["dom", "es2015"],
+    "lib": ["es2017", "dom", "dom.iterable"],
+    "module": "esNext",
     "moduleResolution": "node",
-    "jsx": "react",
-    "allowJs": true,
-    "noImplicitAny": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "target": "es2017",
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "strict": true,
+    "typeRoots": ["node_modules/@types", "typings"],
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
-    "strictNullChecks": true,
-    "allowSyntheticDefaultImports": true,
-    "typeRoots": ["node_modules/@types", "src/types"]
-  }
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "paths": {
+      "*": ["src/*"]
+    },
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+  },
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "build/**/*",
+    "dist/**/*",
+    "*.js",
+    "node_modules"
+  ]
 }

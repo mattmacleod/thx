@@ -25,12 +25,12 @@ export default class Fundamental {
   private panDriftInversion: number;
   private frequencyDriftInversion: number;
   private frequencyDriftFrequency: number;
-  private panDriftFrequency: number;
+  // private panDriftFrequency: number;
   private frequencyDriftOffset: number;
   private panDriftOffset: number;
   private envelopeOffset: number;
 
-  private stopped: boolean = false;
+  private stopped = false;
 
   constructor(
     ctx: AudioContext,
@@ -75,13 +75,13 @@ export default class Fundamental {
     this.filter.Q.value = 0.5;
 
     // Pick random values for frequency and pan drift
-    this.panDriftInversion = _.sample([1, -1])!;
-    this.frequencyDriftInversion = _.sample([1, -1])!;
-    this.frequencyDriftFrequency = _.random(0.05, 0.5)!;
-    this.panDriftFrequency = _.random(0.5, 2.0)!;
-    this.frequencyDriftOffset = _.random(100, 500)!;
-    this.panDriftOffset = _.random(100, 500)!;
-    this.envelopeOffset = _.random(25.0, 30.0)!;
+    this.panDriftInversion = _.sample([1, -1]) as number;
+    this.frequencyDriftInversion = _.sample([1, -1]) as number;
+    this.frequencyDriftFrequency = _.random(0.05, 0.5);
+    // this.panDriftFrequency = _.random(0.5, 2.0) as number;
+    this.frequencyDriftOffset = _.random(100, 500);
+    this.panDriftOffset = _.random(100, 500);
+    this.envelopeOffset = _.random(25.0, 30.0);
 
     // Finally, connect everything up so that we're ready to go
     this.oscillator.connect(this.filter);
@@ -97,7 +97,7 @@ export default class Fundamental {
 
   public stop = () => {
     this.stopped = true;
-  }
+  };
 
   // Returns the final output of the fundamental, which will be mixed with the
   // others to form the fimal note.
@@ -133,14 +133,14 @@ export default class Fundamental {
       this.filter.frequency.setValueAtTime(
         (this.baseFrequency + randomFrequencyShift + landingFrequencyShift) * 3,
         this.context.currentTime,
-      )
+      );
 
       // Repeatedly call this function until the fundamental is told to stop
-      if (!this.stopped) window.setTimeout(update, 1 / UPDATE_FREQUENCY)
-    }
+      if (!this.stopped) window.setTimeout(update, 1 / UPDATE_FREQUENCY);
+    };
 
     update();
-  }
+  };
 
   // This function gradually shifts the stereo position of the fundamental
   private startPanDrift = () => {
@@ -153,11 +153,11 @@ export default class Fundamental {
       this.panner.pan.setValueAtTime(pan, this.context.currentTime);
 
       // Repeatedly update the value until the fundamental is stopped
-      if (!this.stopped) window.setTimeout(update, 1 / UPDATE_FREQUENCY)
-    }
+      if (!this.stopped) window.setTimeout(update, 1 / UPDATE_FREQUENCY);
+    };
 
     update();
-  }
+  };
 
   private get sweep() {
     const x = (this.context.currentTime * 1000) / this.runtime;

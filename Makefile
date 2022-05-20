@@ -1,24 +1,25 @@
-WEBPACK=./node_modules/.bin/webpack
-WEBPACK_DEV_SERVER=./node_modules/.bin/webpack-dev-server
-
 .PHONY: all build deps dist
 
 all: build
 
 build:
-	${WEBPACK} --config ./webpack.config.js --mode development
+	yarn build
 
 dist:
-	NODE_ENV=production ${WEBPACK} --config ./webpack.config.js --mode production
+	yarn dist
 
 clean:
 	rm build/* dist/*
 
 debug:
-	${WEBPACK_DEV_SERVER} --config ./webpack.config.js --hot --inline --mode development
+	yarn dev
 
 deps:
 	yarn install
 
+lint:
+	yarn eslint
+	yarn stylelint
+
 test:
-	NODE_ENV=production
+	yarn test

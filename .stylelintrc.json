@@ -1,0 +1,15 @@
+{
+    "extends": "stylelint-config-standard-scss",
+    "rules": {
+      "indentation": 2,
+      "string-quotes": "single",
+      "selector-class-pattern": "^[a-zA-Z0-9]*$",
+      "at-rule-empty-line-before": null,
+      "declaration-empty-line-before": null,
+      "value-keyword-case": null,
+      "scss/dollar-variable-empty-line-before": null,
+      "no-descending-specificity": null,
+      "scss/at-extend-no-missing-placeholder": null,
+      "selector-pseudo-class-no-unknown": [ true, { "ignorePseudoClasses": ["global"] } ]
+    }
+  }
