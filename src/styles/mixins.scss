@@ -1,0 +1,23 @@
+@use 'sass:math';
+
+@mixin font-size($size, $lines: 0) {
+  $scale: math.div($size, $base-font-size);
+  $auto-line-height: math.ceil($scale) * $base-line-height;
+  font-size: $size;
+  line-height: if($lines > 0, $lines * $base-line-height, $auto-line-height);
+}
+
+@mixin base-font {
+  font-family: $font-family;
+  font-style: normal;
+  font-weight: normal;
+}
+
+@function grid-units($count) {
+  @return $count * $base-line-height;
+}
+
+@mixin hide-text {
+  color: transparent;
+  font: 0 / 0 fake-font; // stylelint-disable-line font-family-no-missing-generic-family-keyword
+}

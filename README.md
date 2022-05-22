@@ -1,6 +1,6 @@
 # THX Deep Note
 
-This project is my attempt to recreate the [THX Deep Note](https://www.thx.com/deepnote/) in Javascript. It was inspired by [Batuhan Bozkurt's work on the same thing](https://earslap.com/article/recreating-the-thx-deep-note.html), but I was interested in how the relatively new [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) could be used to implement the same thing.
+This project is my attempt to recreate the [THX Deep Note](https://www.thx.com/deepnote/) in Javascript. It was inspired by [Batuhan Bozkurt's work on the same thing](https://earslap.com/article/recreating-the-thx-deep-note.html), but I was interested in how the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) could be used to implement the same thing.
 
 ## Description
 

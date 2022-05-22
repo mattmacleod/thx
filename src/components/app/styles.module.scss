@@ -1,6 +1,73 @@
-.button {
-  padding: 1rem 2rem;
-  border: none;
-  background: white;
-  border-radius: 3px;
+@import 'styles/shared';
+
+$size-content: 600px;
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  display: flex;
+  flex: 1 0;
+}
+
+.contentSection {
+  flex: 0 0 $size-content;
+  padding: grid-units(1) grid-units(2);
+
+  h1 {
+    @include font-size(36px, 2);
+    margin-bottom: grid-units(2);
+  }
+
+  a {
+    color: $color-link;
+    text-decoration: underline;
+  }
+}
+
+.annotationSection {
+  display: flex;
+  flex: 1 1%;
+  background: $color-foreground;
+  color: $color-background;
+  padding: grid-units(2);
+  gap: grid-units(1);
+
+  .code {
+    flex: 1 0 66%;
+    padding: 0 grid-units(1) !important;
+    border-radius: 5px;
+  }
+
+  .parameters {
+    flex: 1 0 34%;
+    padding: grid-units(1);
+  }
+
+  .field {
+    padding: grid-units(0.5) 0;
+  }
+
+  .btn {
+    border: none;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+
+    &.btnError {
+      background: $color-error;
+    }
+
+    &.btnSuccess {
+      background: $color-success;
+    }
+  }
+
+  :global {
+    .input-range {
+      margin-top: grid-units(1);
+    }
+  }
 }
